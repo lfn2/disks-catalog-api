@@ -1,0 +1,18 @@
+{
+  "name": "disks-catalog-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "@powershell -Command $env:DEBUG='disks-catalog-api:*'; nodemon start"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "^2.6.9",
+    "eslint": "^5.9.0",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.41.2"
+  }
+}
