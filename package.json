@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "@powershell -Command $env:DEBUG='disks-catalog-api:*'; nodemon start"
+    "dev": "@powershell -Command nodemon start"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "^2.6.9",
-    "eslint": "^5.9.0",
+    "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
