@@ -8,3 +8,9 @@ exports.create = async (request, response) => {
 
   response.send(disk);
 }
+
+exports.getAll = async (request, response, next) => {
+  let disks = await Disk.findAll();
+  
+  response.send(disks);
+}
