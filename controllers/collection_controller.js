@@ -1,5 +1,6 @@
 const Collection = require('../models/collection');
 const Disk = require('../models/disk');
+const CollectionDiskAssociation = require('../models/collection_disk_association');
 
 exports.create = async (request, response) => {
   let disks = await Disk.findAll({
@@ -30,5 +31,41 @@ exports.get = async(request, response) => {
     }]
   })
 
+  if (collection === null) {
+    return response.sendStatus(404);
+  }
+
   response.send(collection);
+}
+
+exports.delete = async(request, response) => {
+  let collection = await Collection.findByPk(request.params.id);
+
+  if (collection === null) {
+    return response.sendStatus(404);
+  }
+
+  collection.destroy();
+
+  response.sendStatus(204);
+}
+
+exports.deleteDisk = async (request, response) => {
+  let collection = await Collection.findByPk(request.params.collectionId);
+  if (collection === null) {
+    return response.sendStatus(404);
+  }
+
+  let disk = await Disk.findByPk(request.params.diskId);
+  if (disk === null) {
+    return response.sendStatus(404);
+  }
+
+  CollectionDiskAssociation.destroy({
+    where: {
+      collectionId: collection.id,
+      diskId: disk.id }
+  });
+
+  response.sendStatus(204);
 }
