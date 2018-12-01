@@ -26,7 +26,8 @@ exports.getOne = async(request, response) => {
     include: [{
       model: Disk,
       through: {
-        attributes: ['title', 'artist']
+        //this excludes the association model from being returned
+        attributes: []
       }
     }]
   })
