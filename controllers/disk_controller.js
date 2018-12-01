@@ -41,12 +41,12 @@ exports.edit = async (request, response) => {
 }
 
 exports.delete = async (request, response) => {
-  let disk = await Collection.findByPk(request.params.id);
+  let disk = await Disk.findByPk(request.params.id);
   if (disk === null) {
     return response.sendStatus(404);
   }
 
-  destroyed.destroy();
+  disk.destroy();
 
   response.sendStatus(204);
 }
