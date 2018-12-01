@@ -3,6 +3,10 @@ const Disk = require('../models/disk');
 const CollectionDiskAssociation = require('../models/collection_disk_association');
 
 exports.create = async (request, response) => {
+  if (request.body.name == null) {
+    return response.sendStatus(400);
+  }
+
   let disks = await Disk.findAll({
     where: { id: request.body.disks }
   });
