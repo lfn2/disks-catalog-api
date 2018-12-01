@@ -26,18 +26,17 @@ exports.getAll = async (request, response) => {
 }
 
 exports.edit = async (request, response) => {
-    let disk = await Disk.findByPk(request.params.id)
+  let disk = await Disk.findByPk(request.params.id)
+  if (disk === null) {
+    return response.sendStatus(404);
+  }
 
-    if (disk === null) {
-      response.sendStatus(404);
-    }
+  await disk.update({
+    title: request.body.title || disk.title,
+    artist: request.body.artist || disk.artist
+  });
 
-    await disk.update({
-      title: request.body.title,
-      artist: request.body.artist
-    });
-
-    response.send(disk);
+  response.send(disk);
 }
 
 exports.delete = async (request, response) => {
