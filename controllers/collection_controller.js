@@ -21,7 +21,7 @@ exports.getAll = async (request, response) => {
   response.send(collections);
 }
 
-exports.get = async(request, response) => {
+exports.getOne = async(request, response) => {
   let collection = await Collection.findByPk(request.params.id, {
     include: [{
       model: Disk,

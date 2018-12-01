@@ -1,4 +1,6 @@
 const Disk = require('../models/disk');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.create = async (request, response) => {
   let disk = await Disk.create({
@@ -10,7 +12,15 @@ exports.create = async (request, response) => {
 }
 
 exports.getAll = async (request, response) => {
-  let disks = await Disk.findAll();
+  let search = `%${request.query.search || ''}%`
+  let disks = await Disk.findAll({
+    where: {
+      [Op.or]:[
+        {title: {[Op.like]: search}},
+        {artist: {[Op.like]: search}}
+      ]
+    }
+  });
 
   response.send(disks);
 }
