@@ -29,3 +29,13 @@ exports.edit = async (request, response) => {
 
     response.send(disk);
 }
+
+exports.delete = async (request, response) => {
+  await Disk.destroy({
+    where: {
+      id: request.params.id
+    }
+  });
+
+  response.sendStatus(204);
+}
