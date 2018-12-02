@@ -27,9 +27,9 @@ exports.getOne = async(request, response) => {
 }
 
 exports.delete = async(request, response) => {
-  let deletedRows = await Dao.delete(request.params.id);
+  let deleted = await Dao.delete(request.params.id);
 
-  if (deletedRows == 0) {
+  if (!deleted) {
     return response.sendStatus(404);
   }
 

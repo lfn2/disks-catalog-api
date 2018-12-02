@@ -39,7 +39,7 @@ exports.delete = async (id) => {
     }
   });
 
-  return deletedRows;
+  return deletedRows > 0;
 }
 
 exports.addDisksToCollection = async (collection, diskIds) => {
