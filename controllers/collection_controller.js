@@ -1,37 +1,23 @@
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-const Collection = require('../models/collection');
-const Disk = require('../models/disk');
-const CollectionDiskAssociation = require('../models/collection_disk_association');
+const Dao = require('../daos/collections_dao');
 
 exports.create = async (request, response) => {
   if (request.body.name == null) {
     return response.sendStatus(400);
   }
 
-  let collection = await Collection.create({
-    name: request.body.name
-  });
+  let collection = await Dao.create(request.body);
 
   response.send(collection);
 }
 
 exports.getAll = async (request, response) => {
-  let collections = await Collection.findAll();
+  let collections = await Dao.findAll();
 
   response.send(collections);
 }
 
 exports.getOne = async(request, response) => {
-  let collection = await Collection.findByPk(request.params.id, {
-    include: [{
-      model: Disk,
-      through: {
-        //this excludes the association model from being returned
-        attributes: []
-      }
-    }]
-  })
+  let collection = await Dao.find(request.params.id);
 
   if (collection === null) {
     return response.sendStatus(404);
@@ -41,13 +27,11 @@ exports.getOne = async(request, response) => {
 }
 
 exports.delete = async(request, response) => {
-  let collection = await Collection.findByPk(request.params.id);
+  let deletedRows = await Dao.delete(request.params.id);
 
-  if (collection === null) {
+  if (deletedRows == 0) {
     return response.sendStatus(404);
   }
-
-  collection.destroy();
 
   response.sendStatus(204);
 }
@@ -57,22 +41,15 @@ exports.addDisksToCollection = async (request, response) => {
     return response.sendStatus(404);
   }
 
-  let collection = await Collection.findByPk(request.params.collectionId);
+  let collection = await Dao.find(request.params.collectionId);
   if (collection == null) {
     return response.sendStatus(404);
   }
 
-  let disks = await Disk.findAll({
-    where: {
-      id: {
-        [Op.in]: request.body.disks
-      }
-    }
-  });
+  let disks =  request.body.disks;
+  let updatedCollection = await Dao.addDisksToCollection(collection, disks);
 
-  await collection.addDisks(disks);
-
-  response.send(edited);
+  response.send(updatedCollection);
 }
 
 exports.deleteDisk = async (request, response) => {
