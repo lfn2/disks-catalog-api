@@ -7,6 +7,6 @@ router.get('/', collectionController.getAll);
 router.get('/:id', collectionController.getOne);
 router.delete('/:id', collectionController.delete);
 router.post('/:collectionId/addDisks', collectionController.addDisksToCollection);
-router.delete('/:collectionId/disk/:diskId', collectionController.deleteDisk);
+router.delete('/:collectionId/disks/:diskId', collectionController.deleteDisk);
 
 module.exports = router;

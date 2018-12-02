@@ -56,3 +56,13 @@ exports.addDisksToCollection = async (collection, diskIds) => {
   let updatedCollection = await this.find(collection.id);
   return updatedCollection;
 }
+
+exports.removeDiskFromCollection = async (collectionId, diskId) => {
+  let deletedRows = await CollectionDiskAssociation.destroy({
+    where: {
+      collectionId: collectionId,
+      diskId: diskId }
+  });
+
+  return deletedRows > 0;
+}

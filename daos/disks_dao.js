@@ -13,6 +13,12 @@ exports.create = async (attrs) => {
   return disk;
 }
 
+exports.find = async (id) => {
+  let disk = await Disk.findByPk(id);
+
+  return disk;
+}
+
 exports.search = async (search) => {
   search = `%${search || ''}%`
   let disks = await Disk.findAll({
@@ -41,7 +47,7 @@ exports.edit = async (diskId, attrs) => {
 }
 
 exports.delete = async (id) => {
-  let destroyedRows = await disk.destroy({
+  let destroyedRows = await Disk.destroy({
     where: {
       id: id
     }
