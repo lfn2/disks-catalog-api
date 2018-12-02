@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const Collection = require('../models/collection');
 const Disk = require('../models/disk');
 const CollectionDiskAssociation = require('../models/collection_disk_association');
@@ -7,14 +9,9 @@ exports.create = async (request, response) => {
     return response.sendStatus(400);
   }
 
-  let disks = await Disk.findAll({
-    where: { id: request.body.disks }
-  });
-
   let collection = await Collection.create({
     name: request.body.name
   });
-  await collection.addDisks(disks);
 
   response.send(collection);
 }
@@ -55,9 +52,32 @@ exports.delete = async(request, response) => {
   response.sendStatus(204);
 }
 
+exports.addDisksToCollection = async (request, response) => {
+  if (request.body.disks == null) {
+    return response.sendStatus(404);
+  }
+
+  let collection = await Collection.findByPk(request.params.collectionId);
+  if (collection == null) {
+    return response.sendStatus(404);
+  }
+
+  let disks = await Disk.findAll({
+    where: {
+      id: {
+        [Op.in]: request.body.disks
+      }
+    }
+  });
+
+  await collection.addDisks(disks);
+
+  response.send(edited);
+}
+
 exports.deleteDisk = async (request, response) => {
   let collection = await Collection.findByPk(request.params.collectionId);
-  if (collection === null) {
+  if (collection == null) {
     return response.sendStatus(404);
   }
 
