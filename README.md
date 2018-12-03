@@ -2,7 +2,7 @@
 
 > API for disks catalog client
 
-## Build Setup
+## Running the project
 
 ``` bash
 # install dependencies
